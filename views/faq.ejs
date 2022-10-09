@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('partials/head.ejs'); %>
+        <link href="/stylesheets/faq.css" rel="stylesheet" type="text/css">
+        <script src="/javascripts/faq.js"></script>
+    </head>
+
+<body>
+    <header class="fixed-top">
+        <%- include('partials/menu.ejs') %>
+    </header>
+
+</body>
+
+<main>
+    <div class="container-sm">
+        <div class="row card question">
+            <div class="col-md-12 card-body">
+                <b>How do I user this tool ?</b>
+            </div>
+        </div> 
+        <div class="row card">
+            <div class="col-md-12 card-body">
+                It's easy : simple go the <a href="/request">requests</a> tab and create your requets !<br>
+                Our technician will see it and answer you directly in the application with the specifically designed form.<br>
+                Here is a simple view of the process :<br>
+                <p style="text-align:center"><img class="contentPicture" id="wip" src="images/wip.jpg" /></p><br>
+                And here is full documentation :<br>
+                <a href='/data/TalendOpenStudio_DI_UG_EN_7.3.1.pdf' target="_blank">Link</a>
+            </div>
+        </div> 
+        <br>
+        <div class="row card question">
+            <div class="col-m d-12 card-body">
+                <b>But is it safe ?</b>
+            </div>
+        </div> 
+        <div class="row card">
+            <div class="col-md-12 card-body">
+                We do not have an authentification system yet so everyone will see your requests.<br>
+                Hoewever, it's only for IT Request and there are no personnal data in it, it doesn't matter in that case !<br>
+                Just keep in mind that you have to fil your correct ID to allow us to find your email.<br>
+                <img src='' alt=''>
+            </div>
+        </div>
+        <br>
+        <div class="row card question">
+            <div class="col-md-12 card-body">
+                <b>The old application was good, why do you change ?</b>
+            </div>
+        </div> 
+        <div class="row card">
+            <div class="col-md-12 card-body">
+                As you may know, we're at the edge of technology and we really care of sustainable developement.<br>
+                This whole new application is completely green and fully responsive ! It will help us demonstrate our skills to customer.
+            </div>
+        </div> 
+        <br>
+        <div class="row card">
+            <div class="col-md-12 card-body question">
+                <b>What is the future of this app ?</b>
+            </div>
+        </div> 
+        <div class="row card">
+            <div class="col-md-12 card-body">
+                We currently have a strong roadmap including the following features with the estimated release date :<br><br>
+                <ol class="list-group list-group-numbered mx-auto">
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">Authentification</div>
+                        Add simple authentification system with admin and user role
+                      </div>
+                      <span class="badge bg-primary rounded-pill">12/2022</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">Registration</div>
+                        Add a registration process to provide access to customer
+                      </div>
+                      <span class="badge bg-primary rounded-pill">06/2023</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">Customization</div>
+                        Add profil picture to user profil and retrieve it from Active Directory for internal users.
+                      </div>
+                      <span class="badge bg-primary rounded-pill">03/2023</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                          <div class="fw-bold">Administration</div>
+                          Add admin functionnalities to modify this FAQ directly on the web page
+                        </div>
+                        <span class="badge bg-primary rounded-pill">12/2023</span>
+                      </li>
+                  </ol>
+            </div>
+        </div> 
+    </div>
+</main>
+
+
+<footer class="fixed-bottom">
+    <%- include('partials/footer.ejs'); %>
+</footer>
+
+<script>
+    $("#navbarWeatherPic").hide();
+    setTimeout(() => {
+      $("#navbarWeatherPic").show();
+    }, 400);
+</script>
+
+</html>

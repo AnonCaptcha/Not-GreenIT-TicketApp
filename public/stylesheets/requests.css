@@ -1,0 +1,22 @@
+#requestsTable {
+    margin-top: 0%;
+}
+
+#no-request {
+    margin-top: 10%;
+    background-color: lightgrey;
+    padding: 5px;
+    border: solid 2px crimson;
+}
+
+.w-id {
+    width: 15%;
+}
+
+.w-action {
+    width: 20%;
+}
+
+.w-comment {
+    width: 20%;
+}

@@ -1,0 +1,16 @@
+INSERT INTO Users(ID, NAME, SURNAME, BIRTHDATE, PROFIL) VALUES
+(1,'Test Name 1','Test surname 1','2000-01-01','ADMIN'),
+(2,'Test Name 2','Test surname 2','2000-01-01','USER'),
+(3,'Test Name 3','Test surname 3','2000-01-01','USER'),
+(4,'Test Name 4','Test surname 4','2000-01-01','USER'),
+(5,'Test Name 5','Test surname 5','2000-01-01','USER'),
+(6,'Test Name 6','Test surname 6','2000-01-01','USER'),
+(7,'Test Name 7','Test surname 7','2000-01-01','USER'),
+(8,'Test Name 8','Test surname 8','2000-01-01','USER'),
+(9,'Test Name 9','Test surname 9','2000-01-01','USER'),
+(10,'Test Name 10','Test surname 10','2000-01-01','ADMIN'),
+(11,'Test Name 11','Test surname 11','2000-01-01','USER'),
+(12,'Test Name 12','Test surname 12','2000-01-01','USER'),
+(13,'Test Name 13','Test surname 13','2000-01-01','USER'),
+(14,'Test Name 14','Test surname 14','2000-01-01','USER'),
+(15,'Test Name 15','Test surname 15','2000-01-01','USER');

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('partials/head.ejs'); %>
+    </head>
+
+<body>
+    <header class="fixed-top">
+        <%- include('partials/menu.ejs') %>
+    </header>
+
+</body>
+
+<main>
+    <div class="container-sm">
+        <div class="row card">
+            <div class="col-md-12 card-body">
+                Here is some statistics of the platform :<br><br>
+                We currently have <b><%= totRequest %></b> requests on the platform. <br>
+                Repartition by priority is <b><%= totHigh %></b> "HIGH", <b><%= totMedium%></b> "MEDIUM" and <b><%= totLow %></b> "LOW".
+                <br><br>
+                We currently have <b><%= totUsers %></b> users on the platform.<br>
+                Repartition by profil is <b><%= totAdmin %></b> administrator and <b><%= totUser %></b> users.
+                <br><br>
+                Stay in touch, we will soon add further informations regarding delay and category (and maybe smooth pie chart)!
+            </div>
+        </div> 
+    </div>
+</main>
+
+
+<footer class="fixed-bottom">
+    <%- include('partials/footer.ejs'); %>
+</footer>
+
+<script>
+    $("#navbarWeatherPic").hide();
+    setTimeout(() => {
+      $("#navbarWeatherPic").show();
+    }, 400);
+</script>
+
+</html>

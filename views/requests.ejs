@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('partials/head.ejs'); %>
+        <link href="/stylesheets/requests.css" rel="stylesheet" type="text/css">
+        <script src="/javascripts/requests.js"></script>
+    </head>
+
+<body>
+    <header class="fixed-top">
+        <%- include('partials/menu.ejs') %>
+    </header>
+
+    <main>
+        <div class="row justify-content-center">
+            <% if(requests.length == 0) {%>
+                <div class="col-md-4 text-center align-middle" id="no-request">
+                    &#9888; There are no requests for this user !&#9888;
+                </div>
+            <% } else { %>
+            <div class="col-md-10">
+                <table class="table table-light" id="requestsTable">
+                    <thead>
+                        <th scope="col" class="w-id">ID (Total requests : <%= totRequest %>)</th>
+                        <th scope="col">User ID</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Priority</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="w-comment">Comment</th>
+                        <th scope="col" class="w-action">Actions</th>
+                    </thead>
+                <% for(const request of requests) { %>
+                    <tr>
+                    <th scope="row"><%= request.ID %></th>
+                    <td><a href="/users/<%= request.USER_ID%>"><%= request.USER_ID %></a></td>
+                    <td><%= request.SUBJECT %></td>
+                    <td><%= request.DESCRIPTION %></td>
+                    <td><%= request.CATEGORY %></td>
+                    <td><%= request.PRIORITY %></td>
+                    <td>
+                      <% if (request.STATUS == 'NEW') { %>
+                        <span class="badge badge-secondary"><%= request.STATUS%></span>
+                      <% } else if (request.STATUS == 'STARTED') { %>
+                        <span class="badge badge-primary"><%= request.STATUS%></span>
+                      <% } else { %>
+                        <span class="badge badge-success"><%= request.STATUS%></span>
+                      <% } %>
+                    </td>
+                    <td><%= request.COMMENT%></td>
+                    <td>
+                        <a class="btn btn-warning update-button" href="#" role="button" data-toggle="modal" data-target="#updateRequestModal" value="<%= request.ID%>">Update</a>
+                        <a class="btn btn-info answer-button" href="#" role="button" data-toggle="modal" data-target="#answerRequestModal" value="<%= request.ID%>">Answer</a>
+                        <a class="btn btn-danger delete-button" href="/requests/delete?id=<%= request.ID %>" role="button">Delete</a>
+                    </td>
+                    </tr>
+                <% } %>
+                <tfoot>
+                    <tr class="text-right">
+                        <td>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                  <li class="page-item">
+                                    <a class="page-link" href="/requests?page=<%= prevPage %>" aria-label="Previous">
+                                      <span aria-hidden="true">&laquo;</span>
+                                      <span class="sr-only">Previous</span>
+                                    </a>
+                                  </li>
+                                <% for(var i=0; i < Math.ceil(totRequest/10)*10; i += 10) { %>
+                                    <% if (currentPage*10 - 20 < i && currentPage*10 + 20 >i ) { %>
+                                        <li class="page-item"><a class="page-link" href="/requests?page=<%= i/10 %>"><%= (i/10)+1 %></a></li>
+                                    <% } %>
+                                <% } %>
+                                  <li class="page-item">
+                                    <a class="page-link" href="/requests?page=<%= nextPage %>" aria-label="Next">
+                                      <span aria-hidden="true">&raquo;</span>
+                                      <span class="sr-only">Next</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </nav>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><a class="btn btn-info" href="/requests/extract" role="button">Extract requests</a>  <a class="btn btn-success" data-toggle="modal" data-target="#addRequestModal" href="#" role="button">Add request</a></td>
+                    </tr>
+                </tfoot>
+                </table>
+            </div>
+            <% } %>
+        </div>
+    </main>
+
+    <!-- Update modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="updateRequestModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Update request information</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                Please fill following fields : </br></br>
+              <form method="post" action="/requests/update" id="formUpdate">
+                <div class="form-group">
+                  <label for="userIdInputUpdate">User ID</label>
+                  <input required type="number" name="userId" class="form-control" min="1" id="userIdInputUpdate" placeholder="Enter user ID">
+                </div>
+                <div class="form-group">
+                  <label for="subjectInputUpdate">Subject</label>
+                  <input required type="text" name="subject" class="form-control" id="subjectInputUpdate" size="20" maxlength="20" placeholder="Enter subject">
+                </div>
+                <div class="form-group">
+                    <label for="descriptionInputUpdate">Description</label>
+                    <input required type="text" name="description" class="form-control" id="descriptionInputUpdate" size="256" maxlength="256" placeholder="Enter description">
+                </div>
+                <div class="form-group">
+                  <label for="categorySelectUpdate">Category</label>
+                  <select class="form-control" name="category" id="categorySelectUpdate">
+                    <option value="DEVICE">DEVICE</option>
+                    <option value="OUTAGE">OUTAGE</option>
+                    <option value="NETWORK">NETWORK</option>
+                    <option value="LICENCE">LICENCE</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="prioritySelectUpdate">Priority</label>
+                  <select class="form-control" name="priority" id="prioritySelectUpdate">
+                    <option value="HIGH">HIGH</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="LOW">LOW</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                    <input required type="hidden" name="id" class="form-control" id="idInputUpdate" value="">
+                  </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="updateModalSendButton">Save changes</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add modal -->
+      <div class="modal fade" tabindex="-1" role="dialog" id="addRequestModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add request</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                Please fill following fields : </br></br>
+              <form method="post" action="/requests/add" id="formAdd">
+                <div class="form-group">
+                    <label for="userIdInputAdd">User ID</label>
+                    <input required type="number" name="userId" class="form-control" id="userIdInputAdd" size="100" maxlength="100" placeholder="Enter user ID">
+                  </div>
+                  <div class="form-group">
+                    <label for="subjectInputAdd">Subject</label>
+                    <input required type="text" name="subject" class="form-control" id="subjectInputAdd" size="100" maxlength="100" placeholder="Enter subject">
+                  </div>
+                <div class="form-group">
+                    <label for="descriptionInputAdd">Description</label>
+                    <input required type="text" name="description" class="form-control" id="descriptionInputAdd" size="100" maxlength="100" placeholder="Enter description">
+                </div>
+                <div class="form-group">
+                  <label for="categorySelectAdd">Category</label>
+                  <select class="form-control" name="category" id="categorySelectAdd">
+                    <option value="DEVICE">DEVICE</option>
+                    <option value="OUTAGE">OUTAGE</option>
+                    <option value="NETWORK">NETWORK</option>
+                    <option value="LICENCE">LICENCE</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="prioritySelectAdd">Priority</label>
+                  <select class="form-control" name="priority" id="prioritySelectAdd">
+                    <option value="HIGH">HIGH</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="LOW">LOW</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="addModalSendButton">Save changes</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Update modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="updateRequestModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Update request information</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              Please fill following fields : </br></br>
+            <form method="post" action="/requests/update" id="formUpdate">
+              <div class="form-group">
+                <label for="userIdInputUpdate">User ID</label>
+                <input required type="number" name="userId" class="form-control" min="1" id="userIdInputUpdate" placeholder="Enter user ID">
+              </div>
+              <div class="form-group">
+                <label for="subjectInputUpdate">Subject</label>
+                <input required type="text" name="subject" class="form-control" id="subjectInputUpdate" size="20" maxlength="20" placeholder="Enter subject">
+              </div>
+              <div class="form-group">
+                  <label for="descriptionInputUpdate">Description</label>
+                  <input required type="text" name="description" class="form-control" id="descriptionInputUpdate" size="256" maxlength="256" placeholder="Enter description">
+              </div>
+              <div class="form-group">
+                <label for="categorySelectUpdate">Category</label>
+                <select class="form-control" name="category" id="categorySelectUpdate">
+                  <option value="DEVICE">DEVICE</option>
+                  <option value="OUTAGE">OUTAGE</option>
+                  <option value="NETWORK">NETWORK</option>
+                  <option value="LICENCE">LICENCE</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="prioritySelectUpdate">Priority</label>
+                <select class="form-control" name="priority" id="prioritySelectUpdate">
+                  <option value="HIGH">HIGH</option>
+                  <option value="MEDIUM">MEDIUM</option>
+                  <option value="LOW">LOW</option>
+                </select>
+              </div>
+              <div class="form-group">
+                  <input required type="hidden" name="id" class="form-control" id="idInputUpdate" value="">
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="updateModalSendButton">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Answer modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="answerRequestModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Answer user request</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              Please fill following fields : </br></br>
+            <form method="post" action="/requests/answer" id="formAnswer">
+              <div class="form-group">
+                <label for="statusSelectAnswer">Status</label>
+                <select class="form-control" name="status" id="statusSelectAnswer">
+                  <option value="NEW">NEW</option>
+                  <option value="STARTED">STARTED</option>
+                  <option value="DONE">DONE</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="commentInputAnswer">Comment</label>
+                <input required type="text" name="comment" class="form-control" id="commentInputAnswer" size="500" maxlength="500" placeholder="Enter comment">
+              </div>
+              <div>
+                <input required type="hidden" name="id" class="form-control" id="idInputAnswer" value="">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="answerModalSendButton">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+      </div>
+    </div>
+</body>
+
+
+<footer class="fixed-bottom">
+    <%- include('partials/footer.ejs'); %>
+</footer>
+
+<script>
+    $("#navbarWeatherPic").hide();
+    setTimeout(() => {
+      $("#navbarWeatherPic").show();
+    }, 400);
+</script>
+
+<script>
+  /* Prevent eventual internal link indexation */
+  $('a.extlink').each(function(el) {
+      $(el).attr('rel','exernal nofollow');
+  });
+</script>
+
+</html>
